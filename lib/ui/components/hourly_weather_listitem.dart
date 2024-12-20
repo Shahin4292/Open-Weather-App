@@ -35,6 +35,14 @@ class HourlyWeatherListItem extends StatelessWidget {
               Text("o", style: TextStyle(color: Colors.white)),
             ],
           ),
+          Container(
+            height: 50,
+            child: Image.network("https:${hour?.condition?.icon.toString()}"),
+            decoration:
+            BoxDecoration(shape: BoxShape.circle, color: Colors.teal),
+          ),
+          Text(DateFormat.j().format(
+              DateTime.parse(hour?.time?.toString() ?? "")), style: TextStyle(color: Colors.white)),
         ],
       ),
     );
