@@ -3,6 +3,7 @@ import 'package:open_weather_app/services/api_service.dart';
 import 'package:open_weather_app/ui/components/today_weather.dart';
 
 import '../model/weather_model.dart';
+import 'components/hourly_weather_listitem.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
@@ -48,6 +49,24 @@ class _HomePageState extends State<HomePage> {
                     style: TextStyle(
                       color: Colors.white,
                       fontSize: 22,
+                    ),
+                  ),
+                  const SizedBox(height: 10,),
+                  SizedBox(
+                    height: 150,
+                    child: ListView.builder(
+                      itemBuilder: (context, index) {
+                        Hour? hour = weatherModel
+                            ?.forecast?.forecastday?[0].hour?[index];
+
+                        return HourlyWeatherListItem(
+                          hour: hour,
+                        );
+                      },
+                      itemCount: weatherModel
+                          ?.forecast?.forecastday?[0].hour?.length ??
+                          0,
+                      scrollDirection: Axis.horizontal,
                     ),
                   ),
                 ],
