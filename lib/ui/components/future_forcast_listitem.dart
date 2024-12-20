@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 import 'package:open_weather_app/model/weather_model.dart';
 
 class FutureForcastListitem extends StatelessWidget {
@@ -18,6 +19,11 @@ class FutureForcastListitem extends StatelessWidget {
       child: Row(
         children: [
           Image.network("https:${forecastday?.day?.condition?.icon ?? ""}"),
+          Text(
+            DateFormat.MMMEd()
+                .format(DateTime.parse(forecastday?.date.toString() ?? "")),
+            style: const TextStyle(color: Colors.white),
+          ),
         ],
       ),
     );
