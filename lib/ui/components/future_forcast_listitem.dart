@@ -19,11 +19,22 @@ class FutureForcastListitem extends StatelessWidget {
       child: Row(
         children: [
           Image.network("https:${forecastday?.day?.condition?.icon ?? ""}"),
-          Text(
-            DateFormat.MMMEd()
-                .format(DateTime.parse(forecastday?.date.toString() ?? "")),
-            style: const TextStyle(color: Colors.white),
+          Expanded(
+            child: Text(
+              DateFormat.MMMEd()
+                  .format(DateTime.parse(forecastday?.date.toString() ?? "")),
+              style: const TextStyle(color: Colors.white),
+
+            ),
           ),
+          Expanded(
+              child: Text(forecastday?.day?.condition?.text ?? "",
+                  style: TextStyle(color: Colors.white))),
+          Expanded(
+              child: Text(
+                  "^${forecastday?.day?.maxtempC?.round()}/${forecastday?.day?.mintempC?.round()}",
+                  style: TextStyle(color: Colors.white, fontSize: 18))),
+
         ],
       ),
     );
