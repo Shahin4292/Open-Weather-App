@@ -16,7 +16,7 @@ class ApiService {
         throw ("No data found");
       }
     } catch (e) {
-      print(e.toString());
+      // print(e.toString());
       throw e.toString();
     }
   }
