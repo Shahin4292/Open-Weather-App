@@ -8,12 +8,11 @@ class HourlyWeatherListItem extends StatelessWidget {
 
   const HourlyWeatherListItem({super.key, this.hour});
 
-
   @override
   Widget build(BuildContext context) {
     return Container(
-      margin: EdgeInsets.all(8),
-      padding: EdgeInsets.all(8),
+      margin: const EdgeInsets.all(8),
+      padding: const EdgeInsets.all(8),
       width: 120,
       decoration: BoxDecoration(
           color: Colors.white24, borderRadius: BorderRadius.circular(20)),
@@ -25,8 +24,8 @@ class HourlyWeatherListItem extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
               Padding(
-                padding: EdgeInsets.only(top: 8.0),
-                child: Text(hour?.tempC?.round().toString() ??"",
+                padding: const EdgeInsets.only(top: 8.0),
+                child: Text(hour?.tempC?.round().toString() ?? "",
                     style: TextStyle(
                         color: Colors.white,
                         fontWeight: FontWeight.bold,
@@ -39,10 +38,12 @@ class HourlyWeatherListItem extends StatelessWidget {
             height: 50,
             child: Image.network("https:${hour?.condition?.icon.toString()}"),
             decoration:
-            BoxDecoration(shape: BoxShape.circle, color: Colors.teal),
+                BoxDecoration(shape: BoxShape.circle, color: Colors.teal),
           ),
-          Text(DateFormat.j().format(
-              DateTime.parse(hour?.time?.toString() ?? "")), style: TextStyle(color: Colors.white)),
+          Text(
+              DateFormat.j()
+                  .format(DateTime.parse(hour?.time?.toString() ?? "")),
+              style: TextStyle(color: Colors.white)),
         ],
       ),
     );
