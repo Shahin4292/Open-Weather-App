@@ -3,6 +3,7 @@ import 'package:open_weather_app/services/api_service.dart';
 import 'package:open_weather_app/ui/components/today_weather.dart';
 
 import '../model/weather_model.dart';
+import 'components/future_forcast_listitem.dart';
 import 'components/hourly_weather_listitem.dart';
 
 class HomePage extends StatefulWidget {
@@ -14,6 +15,36 @@ class HomePage extends StatefulWidget {
 
 class _HomePageState extends State<HomePage> {
   ApiService apiService = ApiService();
+  final _textFieldController = TextEditingController();
+  String queryText = "auto:ip";
+
+  _showTextInputDialog(BuildContext context) async {
+    return showDialog(
+        context: context,
+        builder: (context) {
+          return AlertDialog(
+            title: const Text('Search Location'),
+            content: TextField(
+              controller: _textFieldController,
+              decoration: const InputDecoration(hintText: "search by city,zip"),
+            ),
+            actions: <Widget>[
+              ElevatedButton(
+                child: const Text("Cancel"),
+                onPressed: () => Navigator.pop(context),
+              ),
+              ElevatedButton(
+                  child: const Text('OK'),
+                  onPressed: () {
+                    if (_textFieldController.text.isEmpty) {
+                      return;
+                    }
+                    Navigator.pop(context, _textFieldController.text);
+                  }),
+            ],
+          );
+        });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -29,10 +60,28 @@ class _HomePageState extends State<HomePage> {
           style: TextStyle(
               fontWeight: FontWeight.bold, fontSize: 18, color: Colors.white),
         ),
+        actions: [
+          IconButton(
+              onPressed: () async {
+                _textFieldController.clear();
+                String text = await _showTextInputDialog(context);
+                setState(() {
+                  queryText = text;
+                });
+              },
+              icon: const Icon(Icons.search)),
+          IconButton(
+              onPressed: () {
+                setState(() {
+                  queryText = "auto:ip";
+                });
+              },
+              icon: const Icon(Icons.my_location)),
+        ],
       ),
       body: SafeArea(
         child: FutureBuilder(
-          future: apiService.getWeatherData("Dhaka"),
+          future: apiService.getWeatherData(queryText),
           builder: (context, snapshot) {
             if (snapshot.hasData) {
               WeatherModel? weatherModel = snapshot.data;
@@ -51,7 +100,9 @@ class _HomePageState extends State<HomePage> {
                       fontSize: 22,
                     ),
                   ),
-                  const SizedBox(height: 10,),
+                  const SizedBox(
+                    height: 10,
+                  ),
                   SizedBox(
                     height: 150,
                     child: ListView.builder(
@@ -64,11 +115,37 @@ class _HomePageState extends State<HomePage> {
                         );
                       },
                       itemCount: weatherModel
-                          ?.forecast?.forecastday?[0].hour?.length ??
+                              ?.forecast?.forecastday?[0].hour?.length ??
                           0,
                       scrollDirection: Axis.horizontal,
                     ),
                   ),
+                  SizedBox(
+                    height: size.height * 0.01,
+                  ),
+                  const Text(
+                    "Next 7 Days Weather",
+                    style: TextStyle(
+                      color: Colors.white,
+                      fontSize: 22,
+                    ),
+                  ),
+                  const SizedBox(
+                    height: 10,
+                  ),
+                  Expanded(
+                      child: ListView.builder(
+                    itemBuilder: (context, index) {
+                      return FutureForcastListitem(
+                        forecastday:
+                            weatherModel?.forecast?.forecastday?[index],
+                      );
+                    },
+                    itemCount: weatherModel?.forecast?.forecastday?.length,
+                    scrollDirection: Axis.vertical,
+                    shrinkWrap: true,
+                    padding: EdgeInsets.zero,
+                  ))
                 ],
               );
             }
