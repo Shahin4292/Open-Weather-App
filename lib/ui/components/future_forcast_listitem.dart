@@ -2,10 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:open_weather_app/model/weather_model.dart';
 
-class FutureForcastListitem extends StatelessWidget {
+class FutureForcastListItem extends StatelessWidget {
   final Forecastday? forecastday;
 
-  const FutureForcastListitem({super.key, this.forecastday});
+  const FutureForcastListItem({super.key, this.forecastday});
 
   @override
   Widget build(BuildContext context) {
